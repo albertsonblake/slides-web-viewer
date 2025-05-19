@@ -6,26 +6,30 @@ Slideshow Web Viewer is a lightweight web application designed to render and dis
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/pptx-web-viewer.git
+    git clone https://github.com/albertsonblake/slides-web-viewer.git
     ```
 2. Navigate to the project directory:
     ```bash
-    cd pptx-web-viewer
+    cd slides-web-viewer
     ```
 3. Build the Docker image:
     ```bash
-    docker build -t pptx-web-viewer .
+    docker build -t slides-web-viewer .
     ```
 4. Run the Docker container:
     ```bash
-    docker run -p 8000:8000 pptx-web-viewer
+    docker run -p {PORT}:8000 slides-web-viewer
     ```
-5. Open your browser and navigate to `http://localhost:8000` to access the application.
+5. Open your browser and navigate to `http://{host}:{PORT}` to access the application.
+
+### Revesre Proxy
+
+Highly recommended to use a reverse proxy like Caddy or Traefik to handle SSL termination and routing. This will ensure that your application is secure and can be accessed over HTTPS.
 
 ## Usage
 
-1. Open your browser and navigate to `http://localhost:3000`.
-2. Upload a `.pptx` file using the provided interface.
+1. Open your browser and navigate to `http://{host}:{PORT}`.
+2. Upload a `.pdf` file using the provided interface.
 3. View and navigate through the presentation slides.
 
 ## Contributing
@@ -46,12 +50,3 @@ Contributions are welcome! Please follow these steps:
     git push origin feature-name
     ```
 5. Open a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- Built with ❤️ by [Your Name/Team].
-- Powered by modern web technologies.
