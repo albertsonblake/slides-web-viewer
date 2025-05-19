@@ -117,4 +117,4 @@ if __name__ == "__main__":
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     os.makedirs(TECH_OUTPUT_FOLDER, exist_ok=True)
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(debug=True)
+    app.run()
