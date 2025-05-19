@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slideshow</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-container {
+            width: 100vw; /* Use viewport width */
+            height: 100vh; /* Use viewport height */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .aspect-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625) */
+            max-width: calc(100vh * 16/9); /* Limit width based on height */
+            max-height: calc(100vw * 9/16); /* Limit height based on width */
+            border: 1px solid red; /* Debug border */
+        }
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 1s ease-in-out;
+        }
+        .debug-info {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255,255,255,0.8);
+            padding: 10px;
+            z-index: 1000;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <!-- Debug info display -->
+    <div class="debug-info">
+        <p>Images loaded: <span id="image-count">0</span></p>
+        <p>Current image: <span id="current-image">0</span></p>
+        <div id="image-paths"></div>
+    </div>
+
+    <div class="slide-container">
+        <div class="aspect-container">
+            {% if images %}
+                {% for image in images %}
+                <img src="{{ url_for('static', filename=image) }}" style="opacity: {{ '1' if loop.first else '0' }};">
+                {% endfor %}
+            {% else %}
+                <p style="color: white; position: absolute;">No images found</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        const images = document.querySelectorAll("img");
+        let current = 0;
+        
+        // Debug info
+        document.getElementById("image-count").textContent = images.length;
+        
+        const imagePaths = document.getElementById("image-paths");
+        images.forEach((img, index) => {
+            const path = document.createElement("p");
+            path.textContent = `${index}: ${img.src}`;
+            imagePaths.appendChild(path);
+            
+            // Add error handling
+            img.onerror = () => {
+                path.textContent += " (FAILED TO LOAD)";
+                path.style.color = "red";
+            };
+            
+            img.onload = () => {
+                path.textContent += " (loaded)";
+                path.style.color = "green";
+            };
+        });
+        
+        if (images.length > 0) {
+            setInterval(() => {
+                images[current].style.opacity = 0;
+                current = (current + 1) % images.length;
+                images[current].style.opacity = 1;
+                document.getElementById("current-image").textContent = current;
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

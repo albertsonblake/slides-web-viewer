@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slideshow</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .aspect-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625) */
+            max-width: calc(100vh * 16/9); /* Limit width based on height */
+            max-height: calc(100vw * 9/16); /* Limit height based on width */
+        }
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="aspect-container">
+            {% for image in images %}
+            <img src="{{ url_for('static', filename=image) }}" style="opacity: {{ '1' if loop.first else '0' }};">
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script>
+        const images = document.querySelectorAll("img");
+        let current = 0;
+
+        setInterval(() => {
+            images[current].style.opacity = 0;
+            current = (current + 1) % images.length;
+            images[current].style.opacity = 1;
+        }, 5000);
+    </script>
+</body>
+</html>
